@@ -96,11 +96,12 @@ var websql = (function(){
 			}); //end transaction
 
 		}
-		, getLastRouteID: function(callback){
+		, getLastInsertedID: function(tablename, callback){
 
+			var tablename = tablename.replace(/\s+/g, '');
 			db.transaction(function (tx) {
 
-				tx.executeSql('SELECT id FROM routes order by id desc limit 1', [], function (tx, result) {
+				tx.executeSql('SELECT id FROM '+tablename+' order by id desc limit 1', [], function (tx, result) {
 					
 					var rs = 1;
 

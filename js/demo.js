@@ -6,7 +6,7 @@ websql.createTables();
 
 
 function getLastRouteID(){
-	websql.getLastRouteID(function(result){
+	websql.getLastInsertedID('routes', function(result){
 		document.querySelector("#lastInsertedRouteID").innerHTML = result;
 	});
 }; getLastRouteID();
@@ -73,7 +73,7 @@ document.querySelector("#createTables").addEventListener("click", function(){
 
 document.querySelector("#getLastRoutesID").addEventListener("click", function(){
 
-	websql.getLastRouteID(function(result){
+	websql.getLastInsertedID('routes', function(result){
 		alert("Last inserted Route ID is: " + result);
 	});
 
@@ -82,7 +82,7 @@ document.querySelector("#getLastRoutesID").addEventListener("click", function(){
 
 document.querySelector("#getCoordinates").addEventListener("click", function(){
 
-	websql.getLastRouteID(function(result){
+	websql.getLastInsertedID('routes', function(result){
 
 		var routeID = prompt("Please enter Route ID", result);
 
