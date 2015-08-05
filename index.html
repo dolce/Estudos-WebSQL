@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>Responsive Grid Form</title>
+	<meta name="description" content="Estudos relacionados a Web SQL Database API">
+	<meta name="author" content="Marcelo Dolce" />
+	<script src="WebSQL.js"></script>
+</head>
+<body>
+
+	<style>
+	body{
+		font-family: arial;
+	}
+	hr{
+		border: 0;
+		border-bottom: 1px solid #ddd;
+	}
+	button{
+		padding: 10px;
+		margin: 2px;
+		cursor: pointer;
+	}
+	</style>
+
+	<button id="insertRoute"> Insert 'Routes' </button>
+	<br>
+	<button id="insertCoordinates"> Insert Coordinates to Route: <b id="lastInsertedRouteID"></b> </button>
+	<br>
+	<button id="insertRouteCoordinates"> Insert Route + Coordinates </button>	
+	<hr>
+	<button id="dropRoute"> Drop Table 'Routes' </button>
+	<br>
+	<button id="dropCoordinates"> Drop Table 'Coordinates' </button>
+	<hr>
+	<button id="createTables"> Create Tables </button>
+	<hr>
+	<button id="getLastRoutesID"> get Last Route ID </button>
+	<hr>
+	<button id="getCoordinates"> List 'Coordinates' </button>
+	<div id="result">
+		
+	</div>
+
+	<script>
+	var latitude = "36.1038111",
+		longitude = "-112.1253926";
+
+	websql.open();
+	websql.createTables();
+
+
+	function getLastRouteID(){
+		websql.getLastRouteID(function(result){
+			document.querySelector("#lastInsertedRouteID").innerHTML = result;
+		});
+	}; getLastRouteID();
+
+
+	document.querySelector("#insertRoute").addEventListener("click", function(){
+
+		websql.insertRoute(function(lastInsertedID){
+			
+			getLastRouteID();
+
+		});
+
+	});
+
+
+	document.querySelector("#insertCoordinates").addEventListener("click", function(){
+
+		websql.getLastRouteID(function(result){
+
+			websql.insertCoordinate(result, latitude, longitude, "file.png");
+
+		});
+
+	});
+
+
+	document.querySelector("#insertRouteCoordinates").addEventListener("click", function(){
+
+		websql.insertRoute(function(lastInsertedID){
+			
+			websql.insertCoordinate(lastInsertedID, latitude, longitude, "file.png", function(){
+				getLastRouteID();
+			});
+
+		});
+
+	});
+
+
+	document.querySelector("#dropRoute").addEventListener("click", function(){
+
+		websql.dropTable("routes");
+		document.querySelector("#lastInsertedRouteID").innerHTML = ':(';
+
+	});
+
+
+	document.querySelector("#dropCoordinates").addEventListener("click", function(){
+
+		websql.dropTable("coordinates");
+
+	});
+
+
+	document.querySelector("#createTables").addEventListener("click", function(){
+
+		websql.createTables();
+
+	});
+
+
+	document.querySelector("#getLastRoutesID").addEventListener("click", function(){
+
+		websql.getLastRouteID(function(result){
+			alert("Last inserted Route ID is: " + result);
+		});
+
+	});
+
+
+	document.querySelector("#getCoordinates").addEventListener("click", function(){
+
+		websql.getLastRouteID(function(result){
+
+			var routeID = prompt("Please enter Route ID", result);
+
+			websql.getCoordinates(parseInt(routeID), function(result){
+				var results = result.rows;
+
+				document.querySelector("#result").innerHTML = "<p><b>id • data • latitude • longitude</b></p>";
+				Array.prototype.forEach.call(results, function(el, i){
+
+					console.log(el);
+					document.querySelector("#result").innerHTML += "<p>" + el.id + " • " + el.data + " • " + el.lat + " • " + el.long +"</p>";
+
+
+				});
+			});
+		});
+
+	});
+	</script>
+
+</body>
+</html>
