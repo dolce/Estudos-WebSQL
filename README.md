@@ -9,10 +9,12 @@ Simple library easy to use.
 
 * websql.**dropTable**(tablename, *callback*);
 
+* websql.**getLastInsertedID**(tablename, *callback*);
+
 * websql.**insertRoute**(*callback*);
 
 * websql.**insertCoordinate**(routeid, lat, long, file, *callback*);
 
 * websql.**getCoordinates**(routeid, *callback*);
 
-* websql.**getLastRouteID**(*callback*);
+
