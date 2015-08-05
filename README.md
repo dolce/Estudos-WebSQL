@@ -7,7 +7,7 @@ Simple library easy to use.
 
 * websql.**createTables**();
 
-* websql.**dropTabl**e(tablename, *callback*);
+* websql.**dropTable**(tablename, *callback*);
 
 * websql.**insertRoute**(*callback*);
 
