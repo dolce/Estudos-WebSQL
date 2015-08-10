@@ -25,7 +25,7 @@ document.querySelector("#insertRoute").addEventListener("click", function(){
 
 document.querySelector("#insertCoordinates").addEventListener("click", function(){
 
-	websql.getLastRouteID(function(result){
+	websql.getLastInsertedID('routes' ,function(result){
 
 		document.querySelector("#lastInsertedRouteID").innerHTML = result;
 		websql.insertCoordinate(result, latitude, longitude, "file.png");
@@ -89,12 +89,13 @@ document.querySelector("#getCoordinates").addEventListener("click", function(){
 		websql.getCoordinates(parseInt(routeID), function(result){
 			var results = result.rows;
 
+			console.table(result.rows);
+
 			document.querySelector("#result").innerHTML = "<p><b>id • data • latitude • longitude</b></p>";
 			Array.prototype.forEach.call(results, function(el, i){
 
-				console.log(el);
+				//console.log(el);
 				document.querySelector("#result").innerHTML += "<p>" + el.id + " • " + el.data + " • " + el.lat + " • " + el.long +"</p>";
-
 
 			});
 		});
